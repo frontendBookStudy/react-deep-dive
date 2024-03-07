@@ -35,7 +35,6 @@ React는 JSX로 정의한 구문을 Compile하여 React 객체를 만들어주�
 > _(그럼 이건 누가 변환해서 브라우저 호환을 시켜주나요 ? => Babel, SWC 등등..의 역할)_
 
 React.createElement()는? React에서 사용하는 객체로 만들어준다. 이건 뒤 이어서 나올 챕터에서 더 자세하게 다룰 것으로 보인다.
-React.createElement()를 생성한다 하더라도 바로 DOM 트리에 등록시키는 과정은 아니다.
 
 ### 정리
 
