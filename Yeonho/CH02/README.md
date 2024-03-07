@@ -63,11 +63,11 @@ React.createElement()를 생성한다 하더라도 바로 DOM 트리에 등록�
 
 # React Fiber
 
-## ㅎㅎ 아직
+ㅎㅎ 아직
 
 # Reconciler
 
-## ㅎㅎ 아직
+ㅎㅎ 아직
 
 # Class, Function Component
 
