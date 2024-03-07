@@ -30,7 +30,7 @@ JSX는 Facebook이 제안하였으며, XML과 유사한 것은 HTML 형태로 �
 
 ECMAScript로 변환하면, 누가 ? HTML로 변환할 것인가 ? -> 이 역할은 React가 해준다.
 
-React는 JSX로 정의한 구문을 Compile하여 React.createElement()를 호출하는 변환한다.
+React는 JSX로 정의한 구문을 Compile하여 React 객체를 만들어주는 React.createElement(...) 를 반환하도록 한다.
 
 > _(그럼 이건 누가 변환해서 브라우저 호환을 시켜주나요 ? => Babel, SWC 등등..의 역할)_
 
