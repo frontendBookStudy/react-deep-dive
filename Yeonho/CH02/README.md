@@ -333,7 +333,7 @@ React.createElement(Greeting, { name : 'Taylor' }) // 이 함수를 호출하면
 
 ---
 
-# Virtual DOM , React Fiber
+# Virtual DOM ...?
 
 과거의 웹 페이지는 _(최소... 2015년 이전)_ 정적인 모습을 많이 보였다.
 
@@ -402,3 +402,5 @@ Fiber는 대체 무엇일까? Facebook React는 또 어떤 마법을 부려서 �
 # Class, Function Component
 
 ㅎㅎ 아직
+
+# 메모이제이션에 관한... 나의 생각
