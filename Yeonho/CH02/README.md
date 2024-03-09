@@ -252,7 +252,84 @@ React.createElement()는 무엇을 하는걸까?
 
 # React.createElement() ?
 
-ㅜㅜ
+[React 공식 - React.createElement](https://ko.react.dev/reference/react/createElement)
+
+`createElement(type, props, ...children)` 은 인수를 비롯하여 React Element **객체**를 생성한다.
+
+아래는 createElement를 다시 JSX 문법으로 변환 해본 예다.
+
+```JavaScript
+
+import { createElement } from 'react';
+
+function Greeting({ name }) {
+  return createElement(
+    'h1',
+    { className: 'greeting' },
+    'Hello'
+  );
+}
+
+// 이를 JSX 표현으로 다시 바꿔보면
+
+function Greeting({name}) {
+    return <h1 className={"greeting"}>Hello</h1>
+}
+```
+
+#### createElement 매개변수
+
+**_type_** : 유효한 React Component여야 한다. HTML 태그, Fragment도 가능하다.
+**_props_** : 객체 또는 null 이어야 한다. (빈 객체와 null은 동일하게 처리된다.) `React`는 전달한 props와 일치하는 프로퍼티를 가진 엘리먼트를 생성한다. 전달한 props 객체의 `ref`와 `key`는 특수하기에 props를 통한 접근이 불가하다.
+접근하려면 `element.ref, element.key` 와 같이 element에서 직접 접근해야한다.
+**_...children_** : optional 하며, React Element, 문자열, 숫자, portal, 빈 노드(null, undefined, true, false) 그리고 React Node Array를 포함한 모든 React Node가 될 수 있다. (React Node는 가장 기본적인 단위이다. React Element도 React Node에 포함된다.)
+
+#### createElement 반환값
+
+**_tpye_** : 전달받은 type
+**_props_** : ref와 key를 제외한 전달받은 props. type이 type.defaultProps를 가지는 컴포넌트라면, 누락되거나 정의되지 않은 props는 type.defaultProps의 값을 가져온다. (요즘 함수형에 익숙해져서 잘 모르겠지만 class 형태로 컴포넌트를 만들 때는 defaultProps를 따로 설정해줬었다.)
+**_ref_** : 전달받은 ref, 누락된다면 null
+**_key_** : 전달받은 key를 강제로 문자열로 변환시킨 값, 누락되었다면 null
+
+### 주의 사항
+
+- 반드시 ** React 엘리먼트와 프로퍼티는 불변하게 취급 ** 해야 한다. (직접적으로 변경하면 안된다.) React는 이를 강제하기 위해 엘리먼트와 프로퍼티를 얕게 freeze 한다. _(DOM Element에서 react element를 찾아내서 props를 변경하지 말라는 의미)_
+
+- JSX를 사용한다면 컴포넌트의 명은 무조건 대문자이다. 이유는 JSX 문법을 createElement로 변환시 아래와 같이 변환되기 때문이다.
+
+```JavaScript
+<Something/> = > createElement(Something)
+<something/> => createElement('something') // XXXXXXXXXXXXXX
+```
+
+- `createElement('h1', {}, child1, child2, child3)` 과 같이 호출할 경우 child가 모두 정적이어야 한다. 어지간한 동적인 컴포넌트들이라면 []를 통해 spread로 전달해야한다. 그냥 넣으면 컴포넌트 업데이트가 일어나지 않음
+
+### 그래서 결국 React.createElement()가 생성하는 객체가 어떻게 생긴건데 ?
+
+```JavaScript
+<Greeting name="yeonho"/> // 는 아래와 같이 변환된다.
+React.createElement(Greeting, { name : 'Taylor' }) // 이 함수를 호출하면 아래와 같은 객체가 반환된다.
+// 약간 단순화 됨
+{
+    type : Greeting,
+    props : {
+        name : 'Taylor'
+    },
+    key : null,
+    ref : null
+}
+
+```
+
+엥 근데 이 객체 생성해서 뭐하는거죠?
+
+> 이 객체를 생성해도 컴포넌트가 `DOM Element`로 바로 생성이 되는 것은 아니다.
+
+> `React`는 이렇게 만들어진 엘리먼트를 나중에 렌더링하도록 지시하기 위해 위와 같은 객체로 미리 변환을 해두는 것이다.
+
+> 최종적으로 `App` 컴포넌트에서 위와 같은 객체를 반환함으로서 React가 다음에 할 일을 실행(렌더링 할 준비)한다.
+
+> 엘리먼트 생성 비용은 매우 저렴한 편이니 생성을 최적화 하거나 피하려고 노력할 필요 없다 -> **_컴포넌트를 나눠서 작성해도 큰 비용이 들지 않음, React에서 Atomic Pattern이 왜 유리한지 알 수 있다._**
 
 ---
 
