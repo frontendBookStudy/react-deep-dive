@@ -143,7 +143,7 @@ Babel을 사용해서 JSX로 구성한 React Component가 결국 무엇으로 �
 
 `npm run babel-test` 로 실행 가능하도록 구성하였다.
 
-```
+```JavaScript
 const Babel = require("@babel/standalone");
 Babel.registerPlugin("@babel/plugin-transform-react-jsx", require("@babel/plugin-transform-react-jsx"));
 
@@ -168,15 +168,53 @@ const { code } = Babel.transform(SOURCE_CODE, BABEL_CONFIG);
 console.log(code);
 ```
 
-결과 화면
+**결과 화면**
 
 ![alt text](./img/babel-run.png)
 
-# React는 어떻게 나올까..?
+## React는 어떻게 나올까..?
+
+책에 있는 구성을 통해서 해보려 하였으나, 정확한 `@babel` 에 대한 설정에 대한 설명이 부실하여.. 나름 검색을 해서 구성해보았다.
+
+필요한 패키지는 `@babel/core, @babel/preset-env, @babel/preset-react` 이며 cli 사용을 위해 `@babel/cli` 를 추가적으로 설치하였다.
+
+아래는 .babelrc 파일이다.
+
+```
+{
+  "presets": ["@babel/preset-env", "@babel/preset-react"]
+}
+```
+
+package.json 파일 내용이다.
+
+```
+{
+  "name": "ch02",
+  "version": "1.0.0",
+  "description": "---",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "babel-test": "node src/babel-test.js",
+    "react-test": "babel src/react-test.js -o dist/react-test.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/core": "7.24.0",
+    "@babel/plugin-transform-react-jsx": "7.23.4",
+    "@babel/preset-env": "7.24.0",
+    "@babel/preset-react": "7.23.3",
+    "@babel/standalone": "7.24.0",
+    "@babel/cli": "7.24.0"
+  }
+}
+```
 
 `npm run react-test` 를 실행하면 dist/react-test.js로 변환된 코드가 나온 것을 볼 수 있다.
 
-```
+```JavaScript
 /** 간단한 React 코드 변환을 위함 */
 function TestComponent() {
   return <span> React </span>;
