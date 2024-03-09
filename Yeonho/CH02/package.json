@@ -1,0 +1,21 @@
+{
+  "name": "ch02",
+  "version": "1.0.0",
+  "description": "---",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "babel-test": "node src/babel-test.js",
+    "react-test": "babel src/react-test.js -o dist/react-test.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/core": "7.24.0",
+    "@babel/plugin-transform-react-jsx": "7.23.4",
+    "@babel/preset-env": "7.24.0",
+    "@babel/preset-react": "7.23.3",
+    "@babel/standalone": "7.24.0",
+    "@babel/cli": "7.24.0"
+  }
+}

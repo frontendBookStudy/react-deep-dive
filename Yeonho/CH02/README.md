@@ -38,19 +38,183 @@ React.createElement()는? React에서 사용하는 객체로 만들어준다. �
 
 ### 정리
 
-이를 풀면 React를 사용할 때 DOM 트리를 생성하는 것은 React가 하는 것이며, JSX는 표현의 영역만을 담당한다.
+위 내용을 정리하면 React를 사용할 때 DOM 트리를 생성하는 것은 React가 하는 것이며, JSX는 표현의 영역만을 담당한다.
 
 ---
 
-# 2. JSX를 변환해보자.
+# 2. JSX Component
 
-ㅎㅎ아직
+JSX는 기본적으로 `JSXElement`, `JSXAttributes`, `JSXChildren`, `JSXString` 라는 4가지 컴포넌트를 기반으로 구성되어 있다.
+
+### JSXElement
+
+JSX를 구성하는 가장 기본적인 요소이며, HTML Element와 유사한 역할을 한다.
+JSXElement를 구성하는 컴포넌트들도 존재하는데, 아래 표현 방법에서 각각 어떤 것을 의미하는지 적어보았다.
+
+```JavaScript
+EX) Test 컴포넌트 정의 할때의 각 JSX 요소들 (부가적으로 Another, Member 와 같은 컴포넌트 명도 사용)
+
+Test - JSXIdentifier, 컴포넌트 식별자
+<Test> - JSXOpeningElement
+</Test> - JSXClosingElement
+<Test> </Test> - JSXOpeningElement JSXClosingElement
+<Test/> - JSXSelfClosingElement
+<><> - JSXFragment 표현
+
+JSXNamespacedName (<foo:bar></foo:bar>), JSXMemberExpression(<foo.bar></foo.bar>) 와 같은 형태도 있음
+아래는 간단 예제
+
+import Components from 'Components';
+// import {Button} from 'Components';
+function App() {
+
+    return (
+        <>
+
+            <Components:Button></Components:Button> - JSXNamespacedName (JSXIdentifier:JSXIdentifier)
+            <Components.Button></Components.Button> - JSXMemberExpression (JSXIdentifier.JSXIdentifier)
+        </>
+    )
+}
+
+```
+
+### JSXAttributes
+
+JSXElement에 부여할 수 있는 속성을 의미하며, Optional 하다
+JSXSpreadAttributes, JSXAttribute, JSXAttributeName 등으로 구성된다.
+
+```JavaScript
+여기 또한 Test Component로...
+
+props = {
+    name : "yeonho"
+}
+
+JSXSpreadAttributes - <Test {...props}/>
+JSXAttribute - <Test name="yeonho2">  여기서 name은 JSXAttributeName, "yeonho2" 는 JSXAttibuteValue
+
+JSXAttributeName : JSXIdentifier JSXNamespacedName
+JSXAttributeValue : "", '', {AssignMentExpression}, JSXElement, JSXFragment 사용가능
+
+JSXAttributeValue가 JSXElement를 갖는 경우가 뭔가요?
+
+function Parent({children}) {   /* react context api 등에서 활용 */
+    return <div>{children}</div>
+}
+
+export default function App() {
+    return (
+        <div>
+            <Parent attribute={<div>Test</div>}/>
+        </div>
+    )
+}
+
+```
+
+### JSXChildren
+
+JSXElement 안에서 표현할 수 있는 자식을 표현하는 것을 JSXChildren이라 한다.
+JSXChildren 안에는 여러 개(없을 수도 있음)의 JSXChild로 구성된다.
+
+```JavaScript
+
+<Test> Hello {namelist.map((name : string) => <NameComponent name/>)}</Test>
+
+JSXChild : JSXText, JSXElement, JSXFragment, {JSXChildExpression} 로 구성될 수 있다.
+```
+
+### JSXString
+
+JSXElement에서 표현하는 String을 의미한다.
+JS와 다른 점이라면, JS에서의 String 시 `\n` `\r`와 같은 특수한 역할을 하는 이스케이프 문자 형태가 있는데, JS에서는 string에 `let i = "\"` 을 선언하면 SyntaxError가 발생하여 `let i = "\\"` 와 같이 표현해야지만 `\`가 표현이 된다.
+하지만 JSX안에서는 그냥 표현이 가능하다. `<Test>\</Test>`
+여기서 JSXIdentifier 같은 경우도 `<await/>` 과 같은 컴포넌트명을 사용할 수 있다. JS에서의 예약된 키워드랑 별개이기 때문이다.
 
 ---
 
-# 3. React.createElement() 는 결국 무엇을 만들어내는가?
+위 내용은 https://facebook.github.io/jsx/ 에서 확인하면 더 좋을 것이다.
 
-ㅎㅎ 아직
+# 3. JSX To ECMAScript
+
+Babel을 사용해서 JSX로 구성한 React Component가 결국 무엇으로 변환되는 지 확인해보자.
+이 코드는 src/babel-test.js 에서 구현될 것이다.
+
+`npm run babel-test` 로 실행 가능하도록 구성하였다.
+
+```
+const Babel = require("@babel/standalone");
+Babel.registerPlugin("@babel/plugin-transform-react-jsx", require("@babel/plugin-transform-react-jsx"));
+
+const BABEL_CONFIG = {
+  presets: [],
+  plugins: [
+    [
+      "@babel/plugin-transform-react-jsx",
+      {
+        throwIfNamespace: false,
+        runtime: "automatic",
+        importSource: "custom-jsx-library",
+      },
+    ],
+  ],
+};
+
+const SOURCE_CODE = `const ComponentA = <A>HELLO.</A>`;
+
+const { code } = Babel.transform(SOURCE_CODE, BABEL_CONFIG);
+
+console.log(code);
+```
+
+결과 화면
+
+![alt text](./img/babel-run.png)
+
+# React는 어떻게 나올까..?
+
+`npm run react-test` 를 실행하면 dist/react-test.js로 변환된 코드가 나온 것을 볼 수 있다.
+
+```
+/** 간단한 React 코드 변환을 위함 */
+function TestComponent() {
+  return <span> React </span>;
+}
+
+function MyComponent() {
+  return (
+    <h1>
+      <TestComponent /> 컴포넌트로 변해라!
+    </h1>
+  );
+}
+
+
+/* 위 코드는 아래와 같이 변환 됩니다. */
+
+"use strict";
+
+/** 간단한 React 코드 변환을 위함 */
+function TestComponent() {
+  return /*#__PURE__*/React.createElement("span", null, " React ");
+}
+function MyComponent() {
+  return /*#__PURE__*/React.createElement("h1", null, /*#__PURE__*/React.createElement(TestComponent, null), " \uCEF4\uD3EC\uB10C\uD2B8\uB85C \uBCC0\uD574\uB77C!");
+}
+
+
+
+```
+
+결과를 보면 React.createElement()를 호출하며 인자로 처음에 구성한 내용들이 들어간 것을 볼 수 있다.
+React.createElement()는 무엇을 하는걸까?
+
+---
+
+# React.createElement() ?
+
+ㅜㅜ
 
 ---
 
