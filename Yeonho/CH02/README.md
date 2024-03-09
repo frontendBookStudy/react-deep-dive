@@ -333,15 +333,67 @@ React.createElement(Greeting, { name : 'Taylor' }) // 이 함수를 호출하면
 
 ---
 
-# Vitrual DOM ? React Fiber ?
+# Virtual DOM , React Fiber
 
-ㅎㅎ 아직
+과거의 웹 페이지는 _(최소... 2015년 이전)_ 정적인 모습을 많이 보였다.
+
+하나의 서비스는 정적인 여러 페이지로 구성이 되었고, 각 페이지는 미리 구성된 데이터만을 표현하는 경우가 많았다.
+
+이를 MPA(Multi Page Application) 이라 하며, 과거 Virtual DOM이 없을 때는 원본 DOM을 직접적으로 건드리는 경우가 많았기 때문에 SPA(Single Page Application) 형태로 개발을 하려면 많은 변수가 존재했었다.
+
+React는 Facebook 팀이 Facebook을 더 잘 만들기 위해 만든 View에 집중한 JavaScript UI Library 이다.
+
+그래서 왜 Facebook 팀이 React를 만들었을까? 를 생각해보면 React를 이해하는 데 조금 더 좋은 영향이 있을 것이라 생각한다.
+
+Facebook은 SPA 형태를 가지고 있으며, 계속해서 News Feed에 나의 친구들이 올린 포스트가 업데이트 되고, 스크롤을 내리면 내릴 수록 새로운 컨텐츠가 그려져야했었다.
+
+하지만, 새로운 컨텐츠가 추가될때마다 혹은 사용자가 어떠한 액션을 취할 때 마다 시시각각 변하는 View를 구현하는데 직접적으로 DOM을 건드리는 것은 너무나 많은 Side Effect가 예상되었을 것이다.
+
+여기에 더해, 사용자가 더 많은 컨텐츠를 불러올 수록 (스크롤을 미친듯이 내릴수록) 페이지는 더욱 무거워졌을 것이고 이는 곧 처음과 다르게 DOM 업데이트 속도가 느려질 것이라 예상한다. 이렇게 되면 UX 적으로도 좋은 경험은 아닐 것이고 결국 사용자들은 Facebook이 느려졌으니 앱을 종료할 것이다.
+
+Facebook의 서비스 목표는 더 많은 사용자가 더 많은 컨텐츠를 보고 앱에서 이탈하지 않는 것이라 예상한다.
+
+![alt text](image.png)
+
+Facebook이 내놓은 방법으로는 Virtual DOM을 통해 원본 DOM 대신 Update 하는 것이었다.
+각 UI 컴포넌트에 State를 부여하여 State가 변하게 된다면 Virtual DOM를 통해 컴포넌트 업데이트(re-render)를 발생하게 하였다.
+
+이후 Update가 이루어진 Virtual DOM 부분을 원본 DOM에서 바꿔치기한다.
+
+이렇게 되면 원본 DOM을 직접적으로 접근하여 Side Effect가 발생할 것을 줄일 수 있었고, State가 바뀐 부분만 다시 그려주면 되었기 때문에 규모가 커질 수록 상대적인 성능이 향상 될 것이었다.
+
+실제로 React가 출시되고 나서 Web 서비스들의 퀄리티는 매우 높아졌다. 하지만, 문제가 발생한다.
+Virtual DOM을 사용하던 React 16 이전에는 State가 변경될 때마다 Virtual DOM을 통해 업데이트하는 구조였다.
+100개의 State가 한번에 Update 될 경우 Virtual DOM을 통해 Update 하는 과정이 100번 한다는 소리였다.
+
+문제가 있었다.
+
+컴포넌트는 각각의 State를 가지고 있었고 부모 컴포넌트로 인해 자식 컴포넌트 업데이트가 이뤄지게 된다면 이에따른 Update 과정은 엄청나게 잦았을 것으로 보인다.
+
+눈으로 한번 봐보자. [React 15, Sierpinski Triangle](https://claudiopro.github.io/react-fiber-vs-stack-demo/stack.html)
+
+Update로 인해 프레임이 엄청 떨어지는 것을 볼 수 있다.
+
+오늘 날의 React는 이렇게 되진 않을 것이다.
+React 16버전 이후 적용된 Fiber가 적용되었을 때는 어떨까?
+[React 16, Sierpinski Triangle](https://claudiopro.github.io/react-fiber-vs-stack-demo/fiber.html)
+
+엄청난 성능적 상향이 이뤄진 것일까? Fiber가 적용된 예제를 보았을 때는 속도차이가 어마어마 해보인다.
+
+확실한건, React는 예전부터 Vanilla.js 보다는 느렸다.
+그리고 React 15와 현재의 React의 속도적인 부분의 차이는 크게 없다.
+
+Fiber는 대체 무엇일까? Facebook React는 또 어떤 마법을 부려서 이를 고쳐냈을까?
 
 ---
 
 # React Fiber
 
-ㅎㅎ 아직
+#####개발적인 퍼포먼스와 유저가 느끼는 퍼포먼스는 같은가?
+
+개발적인 퍼포먼스는 결국 태스크가 완료되는 시간이 짧을 수록 퍼포먼스가 좋은 것일 것이다.
+
+하지만, **_과연 유저가 느끼는 퍼포먼스도 이와 동일한가?_**
 
 # Reconciler
 
