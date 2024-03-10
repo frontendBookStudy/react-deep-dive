@@ -1014,7 +1014,7 @@ React 18에서 동시성 렌더링에 관한 Feature가 많이 추가되었기 �
 
 +추가
 
-Concurrency 환경을 도입하려면 React-DOM을 통한 Render 방법이 달라지게 되는데, 기존 React에서는 이런식이었다.
+Concurrency 환경을 도입하려면 react-DOM을 통한 Render 방법이 달라지게 되는데, 기존 React에서는 이런식이었다.
 
 ```JavaScript
 import ReactDOM from 'react-dom';
@@ -1041,6 +1041,12 @@ root.render(<App />);
 ```
 
 위와 같은 과정이 있어야지 Concurrency mode를 사용할 수 있다.
+
+react-DOM이 어떤 역할을 하는지 어느정도 짐작이 가능한 부분이다.
+
+최종적으로 react-DOM이 브라우저 렌더링을 발생시키게 하는 역할이기 때문이다.
+
+아마 RN 환경 같은 곳에서는 다른 것을 불러오겠지?
 
 # 메모이제이션
 
