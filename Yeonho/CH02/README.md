@@ -1006,13 +1006,41 @@ React가 먼저 DOM을 Commit Phase에서 업데이트 한다면 위에서 만�
 
 하긴 아무리 React 위에서 작성한다 하더라도 우리 코드가 모두 비동기로 작동하게 된다면 무슨 일이 일어날 지 끔찍하다..
 
-React 18 이후 Fiber Node의 인자로 mode를 주입할 수 있게 되었다.
-
-또한 동시성 렌더링에 관한 Feature가 많이 추가된 버전이기 때문에, 해당하는 챕터에서 더 자세히 알 수 있을 것이다.
+React 18에서 동시성 렌더링에 관한 Feature가 많이 추가되었기 때문에, 해당하는 챕터에서 더 자세히 알 수 있을 것이다.
 
 사실 오늘 날에서는 이 부분이 제일 중요할 것이라 생각한다.
 
 왜 몇 년 사이 SSR로 프로젝트를 구성하는 경우가 많아졌는지, React 또한 Feature로 Server-Component를 도입하는 이유가 무엇인지
+
++추가
+
+Concurrency 환경을 도입하려면 React-DOM을 통한 Render 방법이 달라지게 되는데, 기존 React에서는 이런식이었다.
+
+```JavaScript
+import ReactDOM from 'react-dom';
+import App from 'App';
+
+const container = document.getElementById('app');
+
+ReactDOM.render(<App />, container);
+```
+
+React 18 버전에서는 아래와 같다.
+
+```JavaScript
+import ReactDOM from 'react-dom';
+import App from 'App';
+
+const container = document.getElementById('app');
+
+// 루트를 생성합니다.
+const root = ReactDOM.createRoot(container);
+
+// 루트를 통해 앱을 렌더 합니다.
+root.render(<App />);
+```
+
+위와 같은 과정이 있어야지 Concurrency mode를 사용할 수 있다.
 
 # 메모이제이션
 
