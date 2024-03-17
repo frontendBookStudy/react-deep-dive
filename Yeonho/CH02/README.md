@@ -114,8 +114,11 @@ JSXChild : JSXText, JSXElement, JSXFragment, {JSXChildExpression} 로 구성될 
 ### JSXString
 
 JSXElement에서 표현하는 String을 의미한다.
+
 JS와 다른 점이라면, JS에서의 String 시 `\n` `\r`와 같은 특수한 역할을 하는 이스케이프 문자 형태가 있는데, JS에서는 string에 `let i = "\"` 을 선언하면 SyntaxError가 발생하여 `let i = "\\"` 와 같이 표현해야지만 `\`가 표현이 된다.
+
 하지만 JSX안에서는 그냥 표현이 가능하다. `<Test>\</Test>`
+
 여기서 JSXIdentifier 같은 경우도 `<await/>` 과 같은 컴포넌트명을 사용할 수 있다. JS에서의 예약된 키워드랑 별개이기 때문이다.
 
 ---
