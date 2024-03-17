@@ -639,3 +639,155 @@ Hook은 함수 컴포넌트의 최상위 레벨에서만 호출되어야 합니�
 Hook은 React 함수 컴포넌트 내부나 다른 Hook 내부에서만 호출될 수 있습니다.
 일반 JavaScript 함수에서 Hook을 호출하면 안 됩니다.
 이 규칙은 Hook의 사용이 예측 가능하도록 하고, 컴포넌트의 상태 관리 로직을 캡슐화하는 데 도움이 됩니다.
+
+## 3.2 사용자 정의 훅과 고차 컴포넌트 중 무엇을 써야 할까?
+
+### 사용자 정의 훅
+
+사용자 정의 훅(Custom Hooks)은 React에서 제공하는 기본 Hook들을 조합하여 만든, 재사용 가능한 함수입니다.
+이러한 사용자 정의 훅을 통해 컴포넌트 간에 상태 관련 로직을 쉽게 공유할 수 있으며, 코드의 중복을 줄이고 가독성을 높일 수 있습니다.
+
+#### 기본 구조
+
+사용자 정의 훅은 일반적으로 `use`라는 접두어로 시작하는 이름을 가집니다.
+이는 훅임을 명확하게 하고, React 규칙에 따라 훅이라는 것을 인식할 수 있도록 합니다.
+
+```jsx
+function useCustomHook() {
+  const [state, setState] = useState(initialState);
+
+  // 훅 로직
+
+  return [state, setState];
+}
+```
+
+#### 예시
+
+상태 관리, 이벤트 리스너, 데이터 fetching 등 다양한 목적으로 사용자 정의 훅을 만들 수 있습니다.
+
+```jsx
+function useFetchData(url) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch(url);
+      const result = await response.json();
+      setData(result);
+      setLoading(false);
+    };
+
+    fetchData();
+  }, [url]);
+
+  return { data, loading };
+}
+```
+
+예를 들어, 특정 데이터를 API에서 가져와서 저장하는 사용자 정의 훅을 만들 수 있습니다.
+이 훅을 사용하면, 다른 컴포넌트에서 API 데이터를 쉽게 가져올 수 있습니다.
+컴포넌트 내에서 이 훅을 호출하기만 하면 됩니다.
+
+```jsx
+function MyComponent() {
+  const { data, loading } = useFetchData('https://api.example.com/data');
+
+  if (loading) return <div>Loading...</div>;
+  return <div>{data}</div>;
+}
+```
+
+#### 장점
+
+1. 재사용성
+    - 특정 로직을 여러 컴포넌트에서 재사용할 수 있습니다.
+2. 코드 분리
+    - 복잡한 컴포넌트를 더 작고 관리하기 쉬운 부분으로 나눌 수 있습니다.
+3. 가독성 향상
+    - 사용자 정의 훅을 통해 코드의 의도를 명확하게 표현할 수 있습니다.
+4. 로직 공유
+    - 상태 관리 로직을 쉽게 다른 컴포넌트와 공유할 수 있습니다.
+
+### 고차 컴포넌트
+
+고차 컴포넌트(Higher-Order Component, HOC)는 리액트 컴포넌트를 감싸고, 새로운 컴포넌트를 반환하는 함수입니다.
+이러한 함수는 컴포넌트의 구성을 변경하거나, 컴포넌트에 추가적인 기능을 부여할 수 있습니다.
+HOC는 함수형 프로그래밍의 고차 함수와 유사한 개념을 가지고 있습니다.
+
+#### 구현 방법
+
+1. 컴포넌트를 인자로 받는 함수를 정의합니다.
+2. 인자로 받은 컴포넌트를 감싸고, 새로운 기능이나 프로퍼티를 추가한 후 반환합니다.
+
+```jsx
+import React from 'react';
+
+function withHOC(WrappedComponent) {
+  return class extends React.Component {
+    render() {
+      return <WrappedComponent {...this.props} additionalProp="This is additional prop from HOC"/>;
+    }
+  };
+}
+```
+
+이 HOC는 `WrappedComponent`라는 컴포넌트를 인자로 받아, 해당 컴포넌트를 감싸고 새로운 프로퍼티를 추가한 후 반환합니다.
+
+#### 장점
+
+1. 컴포넌트의 재사용성 향상
+    - 고차 컴포넌트를 사용하여 여러 컴포넌트에서 동일한 기능을 공유할 수 있습니다.
+2. 로직의 추상화
+    - 고차 컴포넌트를 사용하여 일반적인 로직을 컴포넌트로부터 분리할 수 있습니다.
+3. 컴포넌트의 재구성
+    - 고차 컴포넌트를 사용하여 컴포넌트의 구조나 동작을 변경하거나 확장할 수 있습니다.
+
+#### 주의 사항
+
+1. 명명 규칙
+    - HOC는 보통 `with`로 시작하는 이름을 가집니다.
+    - 예를 들어, `withAuth`, `withRouter` 등이 있습니다.
+2. 충돌 방지
+    - HOC는 재사용 가능한 함수이므로 여러 HOC를 함께 사용할 때 충돌이 발생하지 않도록 조심해야 합니다.
+3. 컴포넌트 구조의 복잡성
+    - 과도한 사용은 컴포넌트의 구조를 복잡하게 만들 수 있으므로, 신중하게 사용해야 합니다.
+
+#### 예시
+
+```jsx
+function withAuth(WrappedComponent) {
+  return class extends React.Component {
+    render() {
+      if (!auth.isAuthenticated) {
+        return <Redirect to="/login"/>;
+      }
+      return <WrappedComponent {...this.props} />;
+    }
+  };
+}
+```
+
+이 예시는 인증이 필요한 페이지에 접근할 때 인증 여부를 확인하는 HOC입니다.
+이렇게 작성된 `withAuth` HOC는 `WrappedComponent`를 감싸고, 사용자가 인증되지 않은 경우에는 로그인 페이지로 리디렉션합니다.
+
+### 사용자 정의 훅과 고차 컴포넌트 중 무엇을 써야 할까
+
+사용자 정의 훅(Custom Hooks)과 고차 컴포넌트(Higher-Order Components, HOC)는 둘 다 리액트 애플리케이션에서 로직을 재사용하고 컴포넌트 간의 코드를 공유하는 방법을 제공합니다.
+하지만 각각의 사용 사례와 상황에 따라 적합한 방법이 다릅니다.
+
+#### 사용자 정의 훅(Custom Hooks) 적합한 상황
+
+1. 상태 로직이나 생명주기 로직을 여러 컴포넌트에서 재사용해야 할 때.
+2. 관련된 로직을 함수 단위로 묶어서 컴포넌트에서 분리하고 싶을 때.
+3. 특정 동작을 수행하는 로직을 여러 컴포넌트에서 공유하고자 할 때.
+
+#### 고차 컴포넌트(Higher-Order Components, HOC) 적합한 상황
+
+1. 리액트 이전 버전에서 사용되던 라이프사이클 메서드와 관련된 로직을 공유해야 할 때.
+2. 여러 컴포넌트에 공통적으로 필요한 기능을 추상화하고자 할 때.
+3. 여러 컴포넌트 간에 상태를 공유하거나 조작해야 할 때.
+
+사용자 정의 훅과 고차 컴포넌트는 각각의 장단점을 고려하여 상황에 맞게 적절히 선택되어야 합니다.
+최신 React 버전에서는 함수 컴포넌트와 훅을 사용하는 것이 권장되며, 이에 따라 사용자 정의 훅을 활용하는 것이 더 일반적인 선택지가 될 수 있습니다.
