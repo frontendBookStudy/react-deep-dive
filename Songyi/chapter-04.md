@@ -79,3 +79,55 @@
 - 요즘의 서버 사이드 렌더링은 SPA, SSR 두가지 장점을 모두 취한 방식으로 작동합니다.
 - 최초 웹사이트 진입 시에는 SSR 방식으로 서버에서 완성된 HTML을 제공받고, 이후 라우팅에서는 서버에서 내려받은 자바스크립트를 바탕으로 마치 SPA처럼 작동합니다.
 - Next.js, Remix 등의 프레임워크는 이러한 방식을 지원하며, 이를 통해 SPA와 SSR의 장점을 모두 취할 수 있습니다.
+
+## 4.2 서버 사이드 렌더링을 위한 리액트 API 살펴보기
+
+- 리액트는 리액트 애플리케이션을 서버에서 렌더링할 수 있는 API를 제공합니다.
+- API는 브라우저의 window 환경이 아닌 Node.js와 같은 서버 환경에서만 실행할 수 있습니다.
+
+### 4.2.1 renderToString
+
+- `renderToString` 함수는 리액트 요소를 초기 HTML 문자열로 렌더링합니다.
+- 이 함수는 서버에서 리액트 애플리케이션을 렌더링하고, 그 결과를 문자열 형태로 반환하여 클라이언트로 전송하는 데 사용됩니다.
+- 이 과정을 통해 클라이언트 측에서 JavaScript가 로드되기 전에도 사용자에게 페이지를 보여줄 수 있으며, SEO 최적화에도 유리합니다.
+
+### 4.2.2 renderToStaticMarkup
+
+- `renderToStaticMarkup` 함수도 리액트 요소를 HTML 문자열로 렌더링하지만, `renderToString`과 달리 리액트 내부 데이터 속성(`data-리액트root` 등)을 포함하지 않습니다.
+- 이 함수는 완전히 정적인 페이지를 생성할 때 사용되며, 클라이언트 사이드에서의 리액트 애플리케이션 재활성화 없이 순수한 HTML만 필요한 경우에 적합합니다.
+
+#### renderToString vs renderToStaticMarkup
+
+- 공통점
+    - 두 함수 모두 리액트 컴포넌트를 HTML 문자열로 변환합니다.
+- 차이점
+    - `renderToString`은 리액트 데이터 속성을 포함하여 클라이언트 사이드에서 애플리케이션을 활성화할 수 있도록 합니다.
+    - `renderToStaticMarkup`은 데이터 속성 없이 순수한 HTML만을 생성하므로, 리액트 애플리케이션을 다시 활성화할 수 없습니다.
+    - `renderToString`은 동적인 페이지에, `renderToStaticMarkup`은 완전히 정적인 페이지에 적합합니다.
+
+### 4.2.3 renderToNodeStream
+
+- `renderToNodeStream` 함수는 리액트 요소를 Node.js 스트림을 통해 HTML 문자열로 변환합니다.
+- 이 함수는 `renderToString`보다 메모리 사용량을 줄이고, 대용량 HTML을 생성할 때 더 효율적인 성능을 제공합니다.
+- 초기 HTML이 사용자에게 조금 더 빨리 전송되기 시작하여, 특히 대규모 애플리케이션에서 로딩 시간을 단축시킬 수 있습니다.
+
+### 4.2.4 renderToStaticNodeStream
+
+- `renderToStaticNodeStream` 함수는 `renderToNodeStream`과 유사하게 작동하지만, `renderToStaticMarkup`처럼 리액트 내부 데이터 속성을 포함하지 않는 정적인 HTML을 스트림을 통해 생성합니다.
+- 이 함수는 대규모 정적 페이지를 효율적으로 서버 사이드에서 렌더링하고 싶을 때 사용됩니다.
+
+#### renderToNodeStream vs renderToStaticNodeStream
+
+- 공통점
+    - 두 함수 모두 리액트 컴포넌트를 Node.js 스트림을 통해 HTML로 변환합니다.
+    - 대용량 데이터 처리에 유리하며, 메모리 사용량을 줄이고 성능을 개선합니다.
+- 차이점
+    - `renderToNodeStream`은 `renderToString`과 마찬가지로 리액트 데이터 속성을 포함합니다.
+    - `renderToStaticNodeStream`은 `renderToStaticMarkup`과 같이 순수한 HTML만 생성합니다.
+    - `renderToNodeStream`는 동적인 페이지를 위한 스트리밍, `renderToStaticNodeStream`는 정적인 페이지를 위한 스트리밍에 적합합니다.
+
+### 4.2.5 hydrate
+
+- `hydrate` 함수는 서버 사이드 렌더링으로 생성된 HTML에 리액트 이벤트 핸들러를 붙이는 과정을 담당합니다.
+- 이 함수는 서버에서 렌더링된 마크업과 동일한 리액트 컴포넌트를 클라이언트에서 재사용하여, 애플리케이션을 대화형으로 만듭니다.
+- `hydrate`는 기본적으로 `renderToString` 또는 `renderToNodeStream`과 함께 사용되며, SSR 애플리케이션의 초기 로딩 성능을 개선하고 사용자 경험을 향상시키는 데 중요한 역할을 합니다.
