@@ -131,3 +131,35 @@
 - `hydrate` 함수는 서버 사이드 렌더링으로 생성된 HTML에 리액트 이벤트 핸들러를 붙이는 과정을 담당합니다.
 - 이 함수는 서버에서 렌더링된 마크업과 동일한 리액트 컴포넌트를 클라이언트에서 재사용하여, 애플리케이션을 대화형으로 만듭니다.
 - `hydrate`는 기본적으로 `renderToString` 또는 `renderToNodeStream`과 함께 사용되며, SSR 애플리케이션의 초기 로딩 성능을 개선하고 사용자 경험을 향상시키는 데 중요한 역할을 합니다.
+
+### 4.2.6 서버 사이드 렌더링 예제 프로젝트
+
+- 특정 /api에서 할 일 목록을 가져오고, 각 할 일을 클릭해 `useState`로 완료 여부를 변경할 수 있는 간단한 SSR 프로젝트입니다.
+    - 서버 사이드에서 할 일 목록을 불러옵니다.
+    - 클릭 이벤트 핸들러를 추가합니다.
+- [Project Code](./chapter-04/4.2.6-ssr-example/README.md)
+
+#### Files
+
+```md
+├── public
+│ ├── index-end.html
+│ ├── index-front.html
+│ └── index.html // 서버 사이트 렌더링을 수행할 때 기본이 되는 HTML 템플릿
+├── src
+│ ├── components
+│ │ ├── App.tsx // 일반적으로 사용자가 만드는 리액트 애플리케이션의 시작점
+│ │ └── Todo.tsx // App.tsx의 자식 컴포넌트, props.todo를 받아 렌더링하는 역할
+│ ├── fetch
+│ │ └── index.ts
+│ ├── index.tsx // 애플리케이션의 시작점
+│ └── server.ts // 사용자의 요청 주소에 따라 어떠한 리소스를 내려줄지 결정하는 역할
+├── README.md
+├── checkStream.js
+├── package-lock.json
+├── package.json
+├── tsconfig.json
+├── typings.d.ts
+├── watch-stream.js
+└── webpack.config.js // 웹팩 설정 파일, 브라우저 코드와 서버 코드를 번들링하는 방식을 선언
+```
