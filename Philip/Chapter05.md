@@ -3,11 +3,11 @@
 상태가 있기 때문
 
 ### 05.01.01 리액트 상태관리의 역사
-https://velog.velcdn.com/images/andy0011/post/4a1f159f-6972-4028-8a18-9a383cf5e44d/image.png
+![MVC](https://velog.velcdn.com/images/andy0011/post/4a1f159f-6972-4028-8a18-9a383cf5e44d/image.png)
 MVC 패턴에서 앱의 규모가 커짐에 따라, View와 Model이 \*..\* 관계로 맵핑되면서, 연결관계가 복잡해짐.
 
 ### Flux 패턴이 등장
-
+![Flux](https://haruair.github.io/flux/img/flux-simple-f8-diagram-explained-1300w.png)
 **Action**
 수행할 동작과 데이터의 집합
 Type
@@ -251,7 +251,7 @@ useState가 지역상태값이라는 내용
 
 
 ### 05.02.04 상태 관리 라이브러리 Recoil, Jotai, Zustand 살펴보기
-https://miro.medium.com/v2/resize:fit:720/format:webp/1*r8e7SDRwavMy8FwNEuHhPg.png
+![StateManagement](https://miro.medium.com/v2/resize:fit:720/format:webp/1*r8e7SDRwavMy8FwNEuHhPg.png)
 
 
 ### Recoil
