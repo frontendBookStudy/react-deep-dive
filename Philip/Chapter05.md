@@ -1,12 +1,12 @@
 # 05장 리액트와 상태관리 라이브러리
 
-
+---
 ## 05.01 상태관리는 왜 필요한가?
 
 상태가 있기 때문
 
 
-
+---
 ### 05.01.01 리액트 상태관리의 역사
 
 ![MVC](https://velog.velcdn.com/images/andy0011/post/4a1f159f-6972-4028-8a18-9a383cf5e44d/image.png)
@@ -14,11 +14,11 @@
 MVC 패턴에서 앱의 규모가 커짐에 따라, View와 Model이 \*..\* 관계로 맵핑되면서, 연결관계가 복잡해짐.
 
 
-
+---
 ### Flux 패턴이 등장
 
 ![Flux](https://haruair.github.io/flux/img/flux-simple-f8-diagram-explained-1300w.png)
-
+---
 **Action**
 
 수행할 동작과 데이터의 집합
@@ -27,14 +27,14 @@ Type
 
 Data
 
-
+---
 
 **Dispatcher**
 
 액션을 스토어에 전달
 
 
-
+---
 **Store**
 
 - 실제 상태값(데이터)
@@ -46,7 +46,7 @@ Data
     - Action.Type에 따른 메서드가 인자값으로부터 상태값을 생성하는 리듀서가 된다.
 
 
-
+---
 **View**
 
 - 상태값을 표현
@@ -92,7 +92,7 @@ const ReactComponent = () => {
 ```
 이 구조에 따라 네 기둥을 다 세우는 작업을 해주어야 하므로 작성이 수고로울 수 있다.
 
-
+---
 ### 리덕스(Redux)
 
 Redux has quite a difficult entry threshold. If a developer learns Redux
@@ -171,7 +171,7 @@ Watcher Saga, Worker Saga와 yield를 통한 미들웨어의 순차 실행 등�
 
 
 
-
+---
 ### ContextAPI
 props drilling 문제가 번거로웠다.
 
@@ -230,7 +230,7 @@ class ParentCompo 생략{
 피차 의존성이 생기기는 매한가지이다. 조금 더 명시적이고 간결해졌다.
 
 
-
+---
 ### 훅의 탄생, 그리고 React Query와 SWR
 
 16.8에서 함수 컴포넌트에서 사용할 수 있는 useState등의 훅 API 추가되었다.
@@ -240,7 +240,7 @@ class ParentCompo 생략{
 이러한 배경에 따라 React Query와 SWR이 등장하였다.
 
 
-
+---
 **useSWR(Stale-While-Revalidate)**
 
 
@@ -258,7 +258,7 @@ const { data, error } = useSWR(
 캐시된 데이터를 활용하여 먼저 화면에 보여준다.
 
 
-
+---
 **ReactQuery**
 
 서버의 상태를 효율적으로 가져오고, 캐시하고, 동기화하고, 업데이트 하기 위한 라이브러리로 캐싱, 동기화, 업데이트 작업을 단순화한다.
@@ -268,7 +268,7 @@ const {data, error, isLoading} = useQuery(key, fetchingFunction);
 ```
 의 형태로 사용된다.
 
-
+---
 **최근**
 Recoil, Zustand, Jotai, Valtio(그리고 책에 나오지 않은 Mobx) 등도 등장함
 
@@ -323,7 +323,7 @@ MobX
 - Redux에서 제공하지 않는 반응형 매커니즘 기본 제공
 
 
-
+---
 ### 05.01.02 정리
 
 | 특징       | Redux                   | Recoil                      | MobX                     | Zustand                     | Jotai                       |
@@ -350,15 +350,15 @@ MobX
 
 위 표는 2022년 말 어딘가에서 주워온것으로 참조만 하시오.
 
-
+---
 ## 05.02 리액트 훅으로 시작하는 상태 관리
-
+---
 ### 05.02.01 가장 기본적인 방법 : useState와 useReducer
 
 가장 기본적인 방법이라 그런지 모두가 알고 있거나, 금방 할 수 있을것
 
 
-
+---
 ### 05.02.02 지역 상태의 한계를 벗어나보자 : useState의 상태를 바깥으로 분리하기
 
 useState가 지역상태값이라는 내용
@@ -384,7 +384,7 @@ useState가 지역상태값이라는 내용
 자세한 내용은 책을 참고하라.
 
 
-
+---
 ### 05.02.03 useState와 Context를 동시에 사용해보기
 
 스토어와 콘텍스트를 동시에 사용해 독립적인 콘텍스트 공간을 갖는 많은 콘텍스트를 구현하는 내용.
@@ -398,12 +398,12 @@ useState가 지역상태값이라는 내용
 Don't reinvent the wheel 하자.
 
 
-
+---
 ### 05.02.04 상태 관리 라이브러리 Recoil, Jotai, Zustand 살펴보기
 
 ![StateManagement](https://miro.medium.com/v2/resize:fit:720/format:webp/1*r8e7SDRwavMy8FwNEuHhPg.png)
 
-
+---
 ### Recoil
 
 작은 상태를 효율적으로 관리
@@ -439,7 +439,7 @@ atom의 값을 가져옴
 
 useState의 형태로 상태값과 업데이트 함수를 반환한다.
 
-
+---
 ### Zustand
 
 https://zustand-demo.pmnd.rs/
@@ -463,7 +463,7 @@ https://zustand-demo.pmnd.rs/
 
 
 
-
+---
 ### Jotai
 
 작은 상태를 효율적으로 관리, Recoil에 영감을 받아 만들어진 상태 관리 라이브러리라고 한다.
@@ -502,8 +502,7 @@ Recoil과 달리 키 관리가 추상화되어 별도의 문자열 키가 없어
 
 
 
-
-
+---
 ### 05.02.05 정리
 
 전역 상태관리에 있어서는
