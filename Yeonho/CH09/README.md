@@ -14,10 +14,8 @@ CNA(create-next-app) 없이 하나씩 구축하기 (Next.js는 Framework 이기 
    `@types/react, @types/react-dom, @types/node, eslint, eslint-config-next` 등
 
 4. tsconfig.json 작성
-   @TODO - Scheme 작성 , confluence에 tsconfig compileOption을 정의해둔 것이 있음..
 
 5. next.config.js 작성
-   @TODO - 버전 별로 다르므로, 최신 버전 기준으로 찾아보아야 할 것
    `reactStrictMode` - react의 엄격 모드를 활성화
    `poweredByHeader` - 일반적으로 보안 취약점으로 취급되는 X-Powered-By 헤더를 제거
    `eslint.ignoreDuringBuilds` : 빌드 시 ESLint 무시
@@ -28,8 +26,7 @@ CNA(create-next-app) 없이 하나씩 구축하기 (Next.js는 Framework 이기 
    여러가지 스타일 적용 법이 있지만,
    `styleX`라는 것이 눈에 띈다.
    `emotion`이나 `StyledComponent` 처럼 컴포넌트 형태로 작성하지만, 빌드 시에는 컴파일러를 통해 `css`로 변환이 가능함
-
-@TODO - 조금 더 디테일한 설명 추가
+   Next.js와 잘 어울릴 것으로 보임
 
 8. App 코드 작성
 
@@ -69,12 +66,12 @@ Github Action은 Github를 기반으로 발생하는 다양한 이벤트를 트�
 
 위와 같은 CI 환경은 Github 뿐만 아니라, 다른 Git 저장소 서비스에서도 제공 하는 경우가 많으므로, 환경에 맞게 살펴보는 것이 좋을 것으로 보인다.
 
-@TODO - Github Action과 Bitbucket 비교하기
-
 ### React App 배포하기
 
 이 부분은 우선 개요만,, 내가 본 서비스는 실제로 PR이 올라갔을 때 Netlify를 통해 배포되어 테스트를 진행할 수 있었다.
 즉, 어떠한 변경점이 있을 때 실제로 앱을 빌드하고 배포하여 테스트를 진행해볼 수 있다는 점이 강점이다.
+
+https://github.com/Kitware/VolView/pull/581
 
 ### React App Dockerize 하기
 
@@ -83,11 +80,31 @@ Docker란 ?
 
 "도커는 개발자가 모던 애플리케이션을 구축, 공유, 실행하는 것을 도와줄 수 있도록 설계된 플랫폼이다. 도커는 지루헌 설정 과정을 대신해 주므로 코드 작성하는 일에만 집중할 수 있다."
 
-과거 Docker를 몰랐을 때 앱에 대한 설정 목록을 리스트업하고, 그대로 설정하면서 작업했던 적이 있다..
+#### Docker 용어
 
-@TODO -
+컨테이너 : 도커의 이미지를 실행한 상태를 컨테이너라 한다. 컨테이너는 독립된 공간이며, 이미지가 목표하는 운영체제, 파일 시스템, 각종 자원 및 네트워크 등이 할당되어 실행될 수 있는 독립된 공간이 생성된다.
 
-1. TODO 작성한 부분 더 채워놓을 것
-2. Docker와 관련된 내용은 직접 진행해보며 추가할 것.
-3. React App 배포하기 부분은 유료 서비스적인 측면이 강한 걸로 알고 있는디... Azure에서는 어떤 서비스가 있는지 알아보는 방향으로 우선 진행
-4. 찾아보면서 더 채워야 할 부분이 있다면 추가적으로 작성
+Dockerfile : 어떤 이미지 파일을 만들 지 정의하는 파일이다. 이 파일을 빌드하면 이미지를 만들 수 있다.
+
+태그 : 이미지를 식별할 수 있는 레이블 값을 의미한다. 일반적으로 **이름 : 태그명** 의 형태로 구성되어 있다. 대표적인 이미지 ubuntu:latest 이며, ubuntu는 이미지 이름이고 latest는 태그명이다.
+
+리포지터리 : 이미지를 모아두는 저장소
+
+레지스트리 : 리포지터리에 접근할 수 있게 해주는 서비스를 의미한다. 대표적인 레지스트리로는 도커 허브가 있다.
+Azure는 Azure Container Registry가 있다.
+
+#### 자주 쓰는 Docker CLI 명령어
+
+docker build : Dockerfile을 기준으로 이미지를 빌드하는 작업을 의미한다. 일반적으로 태그를 부여하는 옵션인 -t와 함께 많이 사용된다.
+
+docker push : 이미지나 리포지터리를 도커 레지스트리에 업로드 하는 과정을 의미한다.
+
+docker tag : 이미지에 태그를 생성하는 명령어이다. 이름을 수정하는 것이 아닌 기존 이미지에 새로운 태그를 붙인다는 것이다.
+
+docker inspect : 이미지나 컨테이너의 세부 정보를 출력하는 명령어이다.
+
+docker run : 이미지를 기반으로 새로운 컨테이너를 생성하는 명령어 이다.
+
+docker ps : 현재 가동 중인 컨테이너 목록을 확인할 수 있는 명령어이며, -all 과 함께 실행한다면 현재 가동중이지 않은 멈춘 컨테이너도 확인할 수 있다.
+
+docker rm : 컨테이너를 삭제할 수 있는 명령어, 실행 중인 컨테이너는 docker stop을 통해 중지하고 삭제해야한다.
