@@ -8,9 +8,6 @@
 
 리액트를 내부에서 2개의 버전을 사용할 수 있도록하는 트리키한 방법을 사용하게할 수 있음
 
-> 회사의 조직이 정말 크거나...너무 빠른 업데이트 버전 업데이트로 라이브러리가 안맞거나..
-> 이런경우가 없었어서 솔직히 쓸일이 있을지 의문이다.
-
 ### 이벤트 핸들러 부착 방식 변경
 
 리액트는 이밴트 타입당 하나의 핸들러를 root에서 관리하게해 위임하는 방식으로 사용.
@@ -128,8 +125,6 @@ useEffect(() => {
 ```
 
 그래서 라이브러리 사용할때 잘 살펴야된다. 근데 진짜 window 참조하는 일아니면 일어나기 힘들듯…
-
-회사에서 사용하는 [valito](https://github.com/pmndrs/valtio/blob/26caa885050b5c9ac8c80c90e216599936e925f8/src/react.ts#L20)에서는 `useSyncExternalStore` 사용해서 외부 스토어를 관리하는것을 확인할 수 있다. [zustand](https://github.com/pmndrs/zustand/blob/27bffb1fba9de4c958f4a4b4d31c20e54e579fc0/src/react.ts#L9)도 맞찬가지로 사용하고 있다.
 
 ### useInsdertionEffect
 
