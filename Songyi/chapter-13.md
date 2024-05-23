@@ -55,3 +55,56 @@
     - 스냅샷
         - 현재 페이지 상태를 기준으로 분석한다
         - 페이지 로딩이 아닌 특정 페이지 특정 상태를 기준으로 분석하고 싶을 때 사용
+
+## 13.3 WebPageTest
+
+- WebPageTest
+    - 웹사이트 성능을 분석하는 도구
+    - WebPageTest에서 제공하는 분석 도구
+        - Site Performance: 웹사이트의 성능 분석을 위한 도구
+        - Core Web Vitals: 웹사이트의 핵심 웹 지표를 확인하기 위한 도구
+        - Lighthouse: 구글 라이트하우스 도구
+        - Visual Comparison: 2개 이상의 사이트를 동시에 실행해 시간의 흐름에 따른 로딩 과정을 비교하는 도구
+        - Traceroute: 네트워크 경로를 확인하는 도구
+    - https://www.webpagetest.org/ 에서 테스트를 할 수 있다
+- 테스트 결과 분석
+    - Performance summary
+        - Opportunities & Experiments: 웹사이트에 대한 평가를 보여준다
+            - Is it Quick: 웹사이트가 충분히 빠른지 평가
+            - Is it Usable: 웹사이트의 사용성과 시각적인 요소를 확인
+            - Is it Resilient: 보안 취약성을 점검
+        - Observed Metrics: 최초 바이트까지의 시간, 렌더링 시작에 소요되는 시간, 최초 콘텐츠풀 페인트 등 측정할 수 있는 다양한 시간 지표를 보여준다
+        - Individual Runs: 3번의 테스트를 진행 후, 각각에 대해 실행 결과를 보여준다
+    - Opportunities & Experiments
+        - Performance summary에서 간단하게 보여준 결과를 자세하게 보여준다
+            - 최초 바이트까지의 시간 점검
+            - 렌더링을 블로킹하는 자바스크립트가 있는지 확인
+            - 렌더링을 블로킹하는 CSS가 있는지 확인
+            - 최초 콘텐츠풀 페인트가 2.5초 이내인지 확인
+            - 주요 영역 내에 게으른 로딩괴는 이미지가 있는지 확인
+            - 주요 영역 외에 이미지가 게으르게 로딩되는지 확인
+            - 문자의 노출을 지연시키는 커스텀 폰트가 있는지 확인
+            - 제3자 호스트에서 폰트를 불러오는지 확인
+            - 실제로 사용하지 않는 리소르를 `rel=preload`로 불러오지 않는지 확인
+            - HTTP 리다이렉트되는 리소스가 있는지 확인
+            - 최초로 다운로드 받은 HTML과 최종 결좌물 HTML 사이에 크기 차이가 크지 않은지 확인
+    - Filmstrip
+        - 시간의 흐름에 따라 어떻게 웹사이트가 그려졌는지, 어떤 리소스가 불러와졌는지 보여준다
+    - Details
+        - Filmstrip 메뉴에서 보여준 내용을 자세하게 보여준다
+    - Web Vitals
+        - 최대 콘텐츠풀 페인트, 누적 레이아웃 이동, 총 블로킹 시간을 자세하게 보여준다
+    - Optimizations
+        - 리소스들이 얼마나 최적화되어 있는지 보여준다
+    - Content
+        - 웹사이트에서 제공하는 콘텐츠, 애셋을 종류별로 묶어 통계를 보여준다
+    - Domains
+        - Content 메뉴에서 보여준 애셋들이 어느 도메인에서 왓는지를 도메인별로 묶어서 보여준다
+    - Console Log
+        - 사용자가 웹페이지에 접속했을 때 `console.log`로 무엇이 기록되었는지 보여준다
+    - Detected Technologies
+        - 웹사이트를 개발하는 데 사용된 기술을 보여준다
+    - Main-thread Processing
+        - 메인 스레드가 어떤 작업을 처리했는지 보여준다
+    - Lighthouse Report
+        - 구글 라이트하우스 리포트를 보여준다
